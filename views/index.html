@@ -78,8 +78,44 @@
                 </div>
             </div>
         </div>
+        <section class="columns info-tiles">
+            <div class="column is-6 tile is-ancestor has-text-centered animate__animated animate__fadeInUp animate__faster">
+                <div class="tile is-parent">
+                    <article class="tile is-child box">
+                        {% if 'accounts' in value %}
+                        <p class="title">{{value['frequencyRegistered']}}</p>
+                        {% else %}
+                        <p class="title">0</p>
+                        {% endif %}
+                        <p class="subtitle">Frequenze registrate</p>
+                    </article>
+                </div>
+                <div class="tile is-parent">
+                    <article class="tile is-child box">
+                        {% if 'deposited' in value %}
+                        <p class="title">{{value['peopleRegistered']}} IC</p>
+                        {% else %}
+                        <p class="title">30</p>
+                        {% endif %}
+                        <p class="subtitle">Persone registrate</p>
+                    </article>
+                </div>
+                <div class="tile is-parent">
+                    <article class="tile is-child box">
+                        {% if 'withdraw' in value %}
+                        <p class="title">{{value['frequencyAviable']}} IC</p>
+                        {% else %}
+                        <p class="title">0</p>
+                        {% endif %}
+                        <p class="subtitle">Frequenze disponibili</p>
+                    </article>
+                </div>
+            </div>
+        </section>
     </section>
 
+    <br>
+    <br>
 
     <section id="features" class="sectionf">
         <div class="container">
@@ -108,7 +144,7 @@
                 <div class="column">
                     <h1 class="title">Sicurezza</h1>
                     <p class="has-text-black paragraph">
-                        La tua frequenza viene salvata nel nostro DB ubicato in Svizzera con crittografia SHA-3
+                        I tuoi dati vengono conservati nel database statale del Ministero delle Comunicazioni. La sicurezza è tutelata da crittografia con standard militari.
                     </p>
                 </div>
             </div>
