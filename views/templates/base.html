@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="it">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="PNRF WebSite for RGBCraft">
+        <link rel="icon" type="image/png" href="https://www.mise.gov.it/templates/frontend/img/logo.svg" />
+
+        <title>
+            {% block title %}{% endblock %}
+            {% if request.path != '/' %} - {% endif %}PNRF
+            {% block title_after %}{% endblock %}
+        </title>
+
+        <script src="https://kit.fontawesome.com/e973a8967a.js" crossorigin="anonymous"></script>
+        <link rel="preload" href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400&display=swap" as="style">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400&display=swap">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+
+        <link rel="stylesheet" href="https://unpkg.com/bulma@0.9.0/css/bulma.min.css">
+
+        {% block header %}{% endblock %}
+    </head>
+    <body>
+        <section class="hero is-fullheight-with-navbar">
+            <!-- Head -->
+            <div class="hero-head">
+                <nav class="navbar">
+                    <div class="container">
+                        <div class="navbar-brand">
+                            <a class="navbar-item" href="/">
+                                <i class="fas fa-wave-square"></i>
+                              </a>
+                            <a class="navbar-item" href="/">
+                                <h3 class="logo has-text-green is-size-4">Piano nazionale di ripartizione delle frequenze</h3>
+                            </a></div>
+
+                        <div class="navbar-menu">
+
+                            <div class="navbar-end">
+                                <a class="a-menu is-size-6 navbar-item"href="/">
+                                    Home
+                                </a>
+                                {% if session.get('logged') %}
+                                <div class="navbar-item has-dropdown is-hoverable">
+                                    <a class="navbar-link">
+                                      Account
+                                    </a>
+                            
+                                    <div class="navbar-dropdown">
+                                      <a class="navbar-item" href="/dashboard">
+                                        Dashboard
+                                      </a>
+                                      <a class="navbar-item" href="/logout">
+                                        Logout
+                                      </a>
+                                      <hr class="navbar-divider">
+                                      <a class="navbar-item">
+                                        Report an issue
+                                      </a>
+                                    </div>
+                                  </div>
+                                {% else %}
+                                <a class="a-menu is-size-6 navbar-item" href="/login">
+                                    login
+                                </a>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <span class="navbar-burger burger" data-target="navbarMenuHeroA">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </span>
+                    </div>
+                </nav>
+            </div>
+            <!-- Content -->
+            {% block content %}{% endblock %}
+
+            <!-- Footer -->
+            <div class="hero-foot">
+                <footer style="border-top: 1px solid hsl(0, 0%, 93%); padding-top: 1.7rem;">
+                    <div class="container">
+                        <div class="container has-text-centered">
+                            <p class="has-text-black is-size-7">
+                                Built with <i class="fa fa-heart" aria-hidden="true" style="color: red;"></i> by MrDionesalvi
+                            </p>
+                            <a href="https://github.com/mrdionesalvi" class="is-size-4 social-link">
+                                <i class="fa fa-github" aria-hidden="true" style="color: black;"></i>
+                            </a>
+                        </div>
+                    </div>
+                </footer>
+            </div>
+        </section>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                (document.querySelectorAll('.notification .delete') || []).forEach(($delete) => {
+                    const $notification = $delete.parentNode;
+
+                    $delete.addEventListener('click', function() {
+                        $notification.parentNode.removeChild($notification);
+                    });
+                });
+
+                let burger = document.querySelector('.burger');
+                let navbar = document.querySelector('.navbar-menu');
+                burger.addEventListener('click', () => {
+                burger.classList.toggle('is-active');
+                navbar.classList.toggle('is-active');
+                });
+
+            });
+        </script>
+    </body>
+</html>
