@@ -4,3 +4,5 @@
 
 
 ## Software per RGBCraft simulando il Piano nazionale di ripartizione delle frequenza (PNFR)
+
+# Parte con la computer craft per il lato MC e lato web per Legoz
