@@ -1,7 +1,7 @@
 from flask import *
 from datetime import timedelta
 
-
+from api.api import api
 import time
 
 
@@ -9,6 +9,8 @@ import time
 app = Flask(__name__, template_folder='views', static_folder='assets', static_url_path='/assets')
 app.secret_key = 'E6pdioneCazzBigEnorm121S9FKWgPGGN6jx6s8yk2X3TT'
 
+
+app.register_blueprint(api, url_prefix='/api')
 
 @app.before_request
 def make_session_permanent():
