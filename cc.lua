@@ -84,6 +84,13 @@ function errore(errore)
     os.reboot()
 end
 
+function playerCheck(player)
+    a = http.get("https://pnrf.rgbcraft.com/api/checkplayer?player="..player)
+    b = a.readAll()
+
+    ret
+end
+
 function new_Frequence()
     clear()
     titolo("PNFR HUB | Nuova Frequenza")
@@ -91,6 +98,12 @@ function new_Frequence()
     testo = "Clicca il sensore posto al lato/sotto"
     term.setCursorPos((maxw - #testo) / 2, 11)
     term.write(testo)
+
+    os.startTimer(120)
+    local event, player = os.pullEvent()
+    if event == "player" then
+        check = playerCheck(player)
+    end
 end
 
 function faq()
