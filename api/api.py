@@ -28,6 +28,25 @@ def checkplayer():
             return '{["status"]="NP"}'
 
 
+@api.route('/newfrequency')
+def newfrequency():
+    if 'player' in request.args:
+        player = request.args['player']
+        player = html.escape(player)
+
+        db = Database()
+        db_session = db.session
+
+        frequency = get_FrequencyByUsername(player)
+
+        print(frequency)
+
+        #return f'{["status"]="OK",["frequency"]={{frequency}}}'
+
+    return '{["status"]="OK"}'
+
+
+
 @api.route('/version/lua')
 def version_lua():
 
