@@ -87,8 +87,25 @@ end
 function playerCheck(player)
     a = http.get("https://pnrf.rgbcraft.com/api/checkplayer?player="..player)
     b = a.readAll()
-
-    ret
+    c = textutils.unserialize(b)
+    a.close()
+    if c['status'] == "OK" then
+        clear()
+        titolo("PNFR HUB | Nuova Frequenza")
+        colore(colors.black)
+        testo = "Sei un nuovo utente!"
+        term.setCursorPos((maxw - #testo) / 2, 11)
+        term.write(testo)
+    elseif c['status'] == "NP" then
+        clear()
+        titolo("PNFR HUB | Nuova Frequenza")
+        colore(colors.black)
+        testo = "Utente già registrato.. ASPETTA!"
+        term.setCursorPos((maxw - #testo) / 2, 11)
+        term.write(testo)
+    else
+        os.reboot()
+    end
 end
 
 function new_Frequence()
@@ -102,7 +119,7 @@ function new_Frequence()
     os.startTimer(120)
     local event, player = os.pullEvent()
     if event == "player" then
-        check = playerCheck(player)
+        playerCheck(player)
     end
 end
 

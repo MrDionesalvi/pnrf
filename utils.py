@@ -3,6 +3,7 @@ from datetime import datetime
 from functools import wraps
 from flask.json import jsonify
 from sqlalchemy.ext.declarative import DeclarativeMeta
+from sqlalchemy.sql.functions import user
 
 
 from database import Database
@@ -57,13 +58,28 @@ def get_allFrequency():
 
     db = Database()
     db_session = db.session
-    data = db.session.query(db.frequency).all()
+    data = db_session.query(db.frequency).all()
 
     data_dumped = json.dumps(data, cls=AlchemyEncoder)
 
-    db.session.close()
+    db_session.close()
 
     return data_dumped
+
+def get_FrequencyByUsername(username):
+    """
+    Restituisce tutte le frequenze presenti sul DB con quell'username
+    """
+
+    db = Database()
+    db_session = db.session
+    data = db_session.query(db.frequency).filter(db.frequency.owner == username).all()
+
+    data_dumped = json.dumps(data, cls=AlchemyEncoder)
+
+    db_session.close()
+
+    return data_dumped   
 
 def get_Frequency(ids):
     """
@@ -72,11 +88,11 @@ def get_Frequency(ids):
 
     db = Database()
     db_session = db.session
-    data = db.session.query(db.frequency).filter(db.frequency.id == ids).all()
+    data = db_session.query(db.frequency).filter(db.frequency.id == ids).all()
 
     data_dumped = json.dumps(data, cls=AlchemyEncoder)
 
-    db.session.close()
+    db_session.close()
 
     return data_dumped 
 
