@@ -96,3 +96,39 @@ def get_Frequency(ids):
 
     return data_dumped 
 
+def get_lastFrequency():
+    """
+    Restituisce l'ultima frequenza sul DB
+    """
+    allFrequency = get_allFrequency()
+
+    allFrequencyLoaded = json.loads(allFrequency)
+
+    lastFrequency = allFrequencyLoaded[-1]
+
+    return(int(lastFrequency['id']))
+
+def assign_LastFrequencyNumber(username):
+    """
+    Assegna l'ultima frequenza
+    """
+    db = Database()
+    db_session = db.session
+
+    allFrequency = get_allFrequency()
+
+    allFrequencyLoaded = json.loads(allFrequency)
+
+    lastFrequency = allFrequencyLoaded[-1]
+
+    lastFrequencyNumber = (int(lastFrequency['id'])+1)
+
+    try:
+        db_session.add(db.frequency(id=lastFrequencyNumber,owner=username, reallocable=0, occuped=1))
+        db_session.commit()
+        db_session.close()
+
+        return lastFrequencyNumber
+    except Exception as e:
+        print(e)
+        return False

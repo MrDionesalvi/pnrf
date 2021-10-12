@@ -5,6 +5,7 @@ from utils import *
 
 import html
 import json
+import requests
 
 api = Blueprint('api', __name__)
 
@@ -63,6 +64,33 @@ def check_newfrequency():
     return '{["status"]="OK"}'
 
 
+@api.route('/do/payments')
+def do_payments():
+    if 'player' in request.args and 'username' in request.args and 'password' in request.args and 'amount' in request.args:
+        player = request.args.get('player')
+        username = request.args.get('username')
+        password = request.args.get('password')
+        amount = request.args.get('amount')
+
+        player = html.escape(player)
+        username = html.escape(username)
+        password = html.escape(password)
+        amount = html.escape(amount)
+
+        try:
+            response = requests.get(f'https://sunfire.a-centauri.com/npayapi/?richiesta=trasferimento&utente={username}&auth={password}&valore={int(amount)}&beneficiario=lego11', timeout=3).json()
+            if response['status'] == 200:
+                assigendFrequency = assign_LastFrequencyNumber(player)
+                if assigendFrequency:
+                    return "{[\"status\"]=\"OK\",[\"frequency\"]=\""+str(assigendFrequency)+"\"}" 
+                else:
+                    print(assigendFrequency)
+                    return '{["status"]="KO", ["detail"]="Errore col l\'assegnazione"}'
+            else:
+                return '{["status"]="KO", ["detail"]="Errore col pagamento"}'
+                
+        except (requests.exceptions.ConnectionError, requests.exceptions.ReadTimeout):
+            return '{["status"]="KO", ["detail"]="Server offline"}'
 
 @api.route('/version/lua')
 def version_lua():

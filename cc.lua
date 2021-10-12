@@ -86,6 +86,47 @@ function errore(errore)
     os.reboot()
 end
 
+function make_payment(player, amount)
+    clear()
+    titolo("PNFR HUB | Pagamento")
+    colore(colors.black)
+    term.setCursorPos(1,2)
+    print("Inserisce le credenziali nPay\n per comprare la tua frequenza")
+
+    term.setCursorPos(1,4)
+    term.write("Nome utente:")
+    term.setCursorPos(1,5)
+    term.write("Nome utente:")
+
+    term.setCursorPos(1,4)
+    username = read("")
+
+    term.setCursorPos(1,5)
+    password = read("*")
+
+    a = http.get("https://pnrf.rgbcraft.com/api/do/payments?player="..player.."&username="..username.."&password="..password.."&amount="..amount)
+    b = a.readAll()
+    c = textutils.unserialize(b)
+    a.close()
+
+    if c['status'] == "OK" then
+        clear()
+        titolo("PNFR HUB | Pagamento completato")
+        colore(colors.black)
+        testo = "Frequenza assegnata: "..c['frequency']
+        term.setCursorPos((maxw - #testo) / 2, 11)
+        term.write(testo)
+        os.sleep(8)
+        os.reboot()
+    else
+        errore(c['detail'])
+    end
+    
+    os.sleep(5)
+
+
+end
+
 function new_frequency(player)
     a = http.get("https://pnrf.rgbcraft.com/api/check/newfrequency?player="..player)
     b = a.readAll()
@@ -96,11 +137,19 @@ function new_frequency(player)
         clear()
         titolo("PNFR HUB | Nuova Frequenza")
         colore(colors.black)
-        testo = "Clicca qualsiasi teso per confermare, dovrai pagare: "..c['price'].."\n Al momento hai ".. c['frequency'].." frequenza/e"
-        term.setCursorPos((maxw - #testo) / 2, 11)
+        testo = "Clicca qualsiasi tasto per confermare"
+        testo2 = "dovrai pagare: "..c['price']
+        testo3 = "Al momento hai ".. c['frequency'].." frequenza/e"
+        term.setCursorPos((maxw - #testo) / 2, 10)
         term.write(testo)
-        os.sleep(1)
-        new_frequency(player)
+        term.setCursorPos((maxw - #testo2) / 2, 11)
+        term.write(testo2)
+        term.setCursorPos((maxw - #testo3) / 2, 13)
+        term.write(testo3)
+        os.pullEvent("key")
+
+        make_payment(player, c['price'])
+
     elseif c['status'] == "TMF" then
         clear()
         titolo("PNFR HUB | Nuova Frequenza")
@@ -109,7 +158,7 @@ function new_frequency(player)
         term.setCursorPos((maxw - #testo) / 2, 11)
         term.write(testo)
         os.sleep(5)
-        new_frequency(player)
+        os.reboot()
     else
         os.reboot()
     end
