@@ -8,6 +8,8 @@ local function drawPixelInternal(xPos, yPos)
     term.setCursorPos(xPos, yPos)
     term.write(" ")
 end
+
+Gplayer = ""
  
 local tColourLookup = {}
 for n = 1, 16 do
@@ -84,11 +86,43 @@ function errore(errore)
     os.reboot()
 end
 
+function new_frequency(player)
+    a = http.get("https://pnrf.rgbcraft.com/api/check/newfrequency?player="..player)
+    b = a.readAll()
+    c = textutils.unserialize(b)
+    a.close()
+
+    if c['status'] == "OK" then
+        clear()
+        titolo("PNFR HUB | Nuova Frequenza")
+        colore(colors.black)
+        testo = "Clicca qualsiasi teso per confermare, dovrai pagare: "..c['price'].."\n Al momento hai ".. c['frequency'].." frequenza/e"
+        term.setCursorPos((maxw - #testo) / 2, 11)
+        term.write(testo)
+        os.sleep(1)
+        new_frequency(player)
+    elseif c['status'] == "TMF" then
+        clear()
+        titolo("PNFR HUB | Nuova Frequenza")
+        colore(colors.black)
+        testo = "Hai troppe frequenze!!, contatatta legoz"
+        term.setCursorPos((maxw - #testo) / 2, 11)
+        term.write(testo)
+        os.sleep(5)
+        new_frequency(player)
+    else
+        os.reboot()
+    end
+
+end
+
 function playerCheck(player)
     a = http.get("https://pnrf.rgbcraft.com/api/checkplayer?player="..player)
     b = a.readAll()
     c = textutils.unserialize(b)
     a.close()
+
+    Gplayer = player
     if c['status'] == "OK" then
         clear()
         titolo("PNFR HUB | Nuova Frequenza")
@@ -96,6 +130,8 @@ function playerCheck(player)
         testo = "Sei un nuovo utente!"
         term.setCursorPos((maxw - #testo) / 2, 11)
         term.write(testo)
+        os.sleep(1)
+        new_frequency(player)
     elseif c['status'] == "NP" then
         clear()
         titolo("PNFR HUB | Nuova Frequenza")
@@ -103,6 +139,8 @@ function playerCheck(player)
         testo = "Utente già registrato.. ASPETTA!"
         term.setCursorPos((maxw - #testo) / 2, 11)
         term.write(testo)
+        os.sleep(1)
+        new_frequency(player)
     else
         os.reboot()
     end

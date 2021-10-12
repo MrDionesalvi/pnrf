@@ -9,6 +9,17 @@ import json
 api = Blueprint('api', __name__)
 
 
+priceFrequency = {
+    1: 0,
+    2: 10,
+    3: 100,
+    4: 1000,
+    5: 10000,
+    6: 100000,
+    7: 1000000,
+    8: 10000000
+}
+
 @api.route('/')
 def list():
     return 'helo!'
@@ -28,20 +39,26 @@ def checkplayer():
             return '{["status"]="NP"}'
 
 
-@api.route('/newfrequency')
-def newfrequency():
+@api.route('/check/newfrequency')
+def check_newfrequency():
     if 'player' in request.args:
         player = request.args['player']
         player = html.escape(player)
 
-        db = Database()
-        db_session = db.session
-
         frequency = get_FrequencyByUsername(player)
+        totalFrequency = 0
 
-        print(frequency)
+        a = json.loads(frequency)
 
-        #return f'{["status"]="OK",["frequency"]={{frequency}}}'
+        for b in a:
+            totalFrequency += 1
+
+        if totalFrequency > 8:
+            return '{["status"]="TMF"}'
+        price = priceFrequency[totalFrequency+1]
+
+        strings = "{[\"status\"]=\"OK\",[\"frequency\"]=\""+str(totalFrequency)+"\",[\"price\"]=\""+str(price)+"\"}" 
+        return strings
 
     return '{["status"]="OK"}'
 
