@@ -18,17 +18,6 @@ def login_required(f):
 
     return decorator
 
-def is_admin(f):
-    @wraps(f)
-    def decorator(*args, **kwargs):
-        if session.get('logged'):
-            db = Database()
-            data = db.session.query(db.admin).filter(db.admin.username == session.get('username')).first()
-            if not data:
-                return redirect(url_for('index'))
-        return f(*args, **kwargs)
-    return decorator
-
 
 class AlchemyEncoder(json.JSONEncoder):
 

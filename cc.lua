@@ -105,21 +105,25 @@ function make_payment(player, amount)
     password = read("*")
 
     a = http.get("https://pnrf.rgbcraft.com/api/do/payments?player="..player.."&username="..username.."&password="..password.."&amount="..amount)
-    b = a.readAll()
-    c = textutils.unserialize(b)
-    a.close()
+    if a ~= nil and a ~= "" then
+        b = a.readAll()
+        c = textutils.unserialize(b)
+        a.close()
 
-    if c['status'] == "OK" then
-        clear()
-        titolo("PNFR HUB | Pagamento completato")
-        colore(colors.black)
-        testo = "Frequenza assegnata: "..c['frequency']
-        term.setCursorPos((maxw - #testo) / 2, 11)
-        term.write(testo)
-        os.sleep(8)
-        os.reboot()
+        if c['status'] == "OK" then
+            clear()
+            titolo("PNFR HUB | Pagamento completato")
+            colore(colors.black)
+            testo = "Frequenza assegnata: "..c['frequency']
+            term.setCursorPos((maxw - #testo) / 2, 11)
+            term.write(testo)
+            os.sleep(8)
+            os.reboot()
+        else
+            errore(c['detail'])
+        end
     else
-        errore(c['detail'])
+        errore("Server offline")
     end
     
     os.sleep(5)
@@ -129,69 +133,76 @@ end
 
 function new_frequency(player)
     a = http.get("https://pnrf.rgbcraft.com/api/check/newfrequency?player="..player)
-    b = a.readAll()
-    c = textutils.unserialize(b)
-    a.close()
+    if a ~= nil and a ~= "" then
+        b = a.readAll()
+        c = textutils.unserialize(b)
+        a.close()
 
-    if c['status'] == "OK" then
-        clear()
-        titolo("PNFR HUB | Nuova Frequenza")
-        colore(colors.black)
-        testo = "Clicca qualsiasi tasto per confermare"
-        testo2 = "dovrai pagare: "..c['price']
-        testo3 = "Al momento hai ".. c['frequency'].." frequenza/e"
-        term.setCursorPos((maxw - #testo) / 2, 10)
-        term.write(testo)
-        term.setCursorPos((maxw - #testo2) / 2, 11)
-        term.write(testo2)
-        term.setCursorPos((maxw - #testo3) / 2, 13)
-        term.write(testo3)
-        os.pullEvent("key")
+        if c['status'] == "OK" then
+            clear()
+            titolo("PNFR HUB | Nuova Frequenza")
+            colore(colors.black)
+            testo = "Clicca qualsiasi tasto per confermare"
+            testo2 = "dovrai pagare: "..c['price']
+            testo3 = "Al momento hai ".. c['frequency'].." frequenza/e"
+            term.setCursorPos((maxw - #testo) / 2, 10)
+            term.write(testo)
+            term.setCursorPos((maxw - #testo2) / 2, 11)
+            term.write(testo2)
+            term.setCursorPos((maxw - #testo3) / 2, 13)
+            term.write(testo3)
+            os.pullEvent("key")
 
-        make_payment(player, c['price'])
+            make_payment(player, c['price'])
 
-    elseif c['status'] == "TMF" then
-        clear()
-        titolo("PNFR HUB | Nuova Frequenza")
-        colore(colors.black)
-        testo = "Hai troppe frequenze!!, contatatta legoz"
-        term.setCursorPos((maxw - #testo) / 2, 11)
-        term.write(testo)
-        os.sleep(5)
-        os.reboot()
+        elseif c['status'] == "TMF" then
+            clear()
+            titolo("PNFR HUB | Nuova Frequenza")
+            colore(colors.black)
+            testo = "Hai troppe frequenze!!, contatatta legoz"
+            term.setCursorPos((maxw - #testo) / 2, 11)
+            term.write(testo)
+            os.sleep(5)
+            os.reboot()
+        else
+            os.reboot()
+        end
     else
-        os.reboot()
+        errore("Server offline")
     end
-
 end
 
 function playerCheck(player)
     a = http.get("https://pnrf.rgbcraft.com/api/checkplayer?player="..player)
-    b = a.readAll()
-    c = textutils.unserialize(b)
-    a.close()
+    if a ~= nil and a ~= "" then
+        b = a.readAll()
+        c = textutils.unserialize(b)
+        a.close()
 
-    Gplayer = player
-    if c['status'] == "OK" then
-        clear()
-        titolo("PNFR HUB | Nuova Frequenza")
-        colore(colors.black)
-        testo = "Sei un nuovo utente!"
-        term.setCursorPos((maxw - #testo) / 2, 11)
-        term.write(testo)
-        os.sleep(1)
-        new_frequency(player)
-    elseif c['status'] == "NP" then
-        clear()
-        titolo("PNFR HUB | Nuova Frequenza")
-        colore(colors.black)
-        testo = "Utente già registrato.. ASPETTA!"
-        term.setCursorPos((maxw - #testo) / 2, 11)
-        term.write(testo)
-        os.sleep(1)
-        new_frequency(player)
+        Gplayer = player
+        if c['status'] == "OK" then
+            clear()
+            titolo("PNFR HUB | Nuova Frequenza")
+            colore(colors.black)
+            testo = "Sei un nuovo utente!"
+            term.setCursorPos((maxw - #testo) / 2, 11)
+            term.write(testo)
+            os.sleep(1)
+            new_frequency(player)
+        elseif c['status'] == "NP" then
+            clear()
+            titolo("PNFR HUB | Nuova Frequenza")
+            colore(colors.black)
+            testo = "Utente già registrato.. ASPETTA!"
+            term.setCursorPos((maxw - #testo) / 2, 11)
+            term.write(testo)
+            os.sleep(1)
+            new_frequency(player)
+        else
+            os.reboot()
+        end
     else
-        os.reboot()
+        errore("Server offline")
     end
 end
 
@@ -287,7 +298,6 @@ while true do
         faq()
         os.reboot()
     end
-    print("\n\n ".. event)
 end
  
 os.sleep(45)

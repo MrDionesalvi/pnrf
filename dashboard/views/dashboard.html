@@ -1,0 +1,159 @@
+{% extends 'templates/base.html' %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block header %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
+
+{% endblock %}
+
+{% block content %}
+<div class="hero-body">
+    <div class="container">
+        <h3 class="title is-5">Statistiche</h3>
+        <div class="columns">
+            <div class="column">
+                <div class="box statistic">
+                    <div class="media ">
+                        <div class="media-left image is-48x48">
+                                <h3 class="icon title is-2 has-text-primary is-block"><i class="fas fa-wave-square"></i></h3>
+                        </div>
+                        <div class="media-content ">
+                            {% if 'frequencyRegistered' in value %}
+                            <p class="title is-4">{{value['frequencyRegistered']}}</p>
+                            {% else %}
+                            <p class="title is-4">0</p>
+                            {% endif %}
+                            <p class="subtitle is-6">Frequenze registrate</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="column">
+                <div class="box statistic">
+                    <div class="media ">
+                        <div class="media-left image is-48x48">
+                            <h3 class="icon title is-2 has-text-link is-block"><i class="fas fa-person-booth"></i>
+                        </div>
+                        <div class="media-content ">
+                            {% if 'peopleRegistered' in value %}
+                            <p class="title is-4">{{value['peopleRegistered']}}</p>
+                            {% else %}
+                            <p class="title is-4">0</p>
+                            {% endif %}
+                            <p class="subtitle is-6">Persone Registrate</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="column">
+                <div class="box statistic">
+                    <div class="media ">
+                        <div class="media-left image is-48x48">
+                                <h3 class="icon title is-2 has-text-dark is-block"><i class="fas fa-comments-dollar"></i></h3>
+                        </div>
+                        <div class="media-content ">
+                            {% if 'frequencyAviable' in value %}
+                            <p class="title is-4">{{value['frequencyAviable']}}</p>
+                            {% else %}
+                            <p class="title is-4">0</p>
+                            {% endif %}
+                            <p class="subtitle is-6">Frequenze disponibili</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="column">
+                <div class="box statistic">
+                    <div class="media ">
+                        <div class="media-left image is-48x48">
+                                <h3 class="icon title is-2 has-text-danger is-block"><i class="fas fa-user-friends"></i></h3>
+                        </div>
+                        <div class="media-content ">
+                            <h4 class="title is-4 ">1</h4>
+                            <p class="subtitle is-6">Dione Felici</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <h3 class="title is-5">Pannelli</h3>
+        <div class="columns">
+            <div class="column">
+                <div class="panel">
+                    <p class="panel-heading">Aggiunta rapida frequenza</p>
+                    <div class="panel-block">
+                        <form action="" class="is-fullwidth">
+                            <div class="field">
+                                <label for="" class="label">Frequency number:</label>
+                                <div class="control">
+                                    <input type="text" name="" id="" class="input">
+                                </div>
+                            </div>
+                            <div class="field">
+                                <label for="" class="label">Owner:</label>
+                                <div class="control">
+                                    <input type="text" name="" id="" class="input">
+                                </div>
+                            </div>
+                            <a class="button is-primary is-rounded has-text-right" onclick="document.getElementsByClassName('modal')[0].classList.add('is-active')">
+                                <strong>Aggiungi</strong>
+                            </a>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="column">
+                <div class="panel">
+                    <p class="panel-heading">Server Status</p>
+                    <div class="panel-block">
+                        <p>Server Online!</p>
+                    </div>
+                </div>
+                <div class="panel">
+                    <p class="panel-heading">Admin</p>
+                    <div class="panel-block">
+                        <p>Al monetno ci sono <b>2</b> admin.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <h3 class="title is-5">Frequenze</h3>
+        <div class="container">
+            <div class="columns">
+                <div class="column">
+                    <table id="table" class="table sortable is-striped is-bordered is-fullwidth">
+                        <thead>
+                            <tr>
+                                <th class="sort" data-sort="id">id</th>
+                                <th class="sort" data-sort="owner">Proprietario</th>
+                                <th class="sort" data-sort="reallocable">Ri-Allocabile</th>
+                                <th class="sort" data-sort="occuped">Occupata</th>
+                                <th colspan="2">
+                                    <input type="text" id="search" placeholder="Cerca" />
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{rows|safe}}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    var $rows = $('#table tbody tr');
+    $('#search').keyup(function() {
+        var val = $.trim($(this).val()).replace(/ +/g, ' ').toLowerCase();
+        
+        $rows.show().filter(function() {
+            var text = $(this).text().replace(/\s+/g, ' ').toLowerCase();
+            return !~text.indexOf(val);
+        }).hide();
+    });
+</script>
+
+{% endblock %}
