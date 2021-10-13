@@ -23,7 +23,7 @@ def index():
                     <td class="owner">{c['owner']}</td>
                     <td class="reallocable">{"Sì" if c['reallocable'] == 1 else "No"}</td>
                     <td class="occuped">{"Sì" if c['occuped'] else "No"}</td>
-                    <td class="remove"><button class="remove-item-btn">Elimina</button></td>
+                    <td class="remove"><button value="{c['id']}" class="remove-item-btn" onclick="DeleteButton(this)">Elimina</button></td>
                 </tr>
         """
 

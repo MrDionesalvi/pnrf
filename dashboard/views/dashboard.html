@@ -83,22 +83,22 @@
                 <div class="panel">
                     <p class="panel-heading">Aggiunta rapida frequenza</p>
                     <div class="panel-block">
-                        <form action="" class="is-fullwidth">
+                        <form action="/api/new/frequency" method="post" class="is-fullwidth">
                             <div class="field">
-                                <label for="" class="label">Frequency number:</label>
+                                <label for="" class="label">Numero della frequenza:</label>
                                 <div class="control">
-                                    <input type="text" name="" id="" class="input">
+                                    <input type="number" name="frequencyNumber" id="frequencyNumber" class="input">
                                 </div>
                             </div>
                             <div class="field">
-                                <label for="" class="label">Owner:</label>
+                                <label for="" class="label">Proprietario:</label>
                                 <div class="control">
-                                    <input type="text" name="" id="" class="input">
+                                    <input type="text" name="owner" id="owner" class="input">
                                 </div>
                             </div>
-                            <a class="button is-primary is-rounded has-text-right" onclick="document.getElementsByClassName('modal')[0].classList.add('is-active')">
-                                <strong>Aggiungi</strong>
-                            </a>
+                            <div class="buttons has-addons">
+                                <button class="button mt-4 is-primary is-rounded has-text-weight-bold" type="submit" style="width: 10rem;" onclick="this.classList.add('is-loading')">Aggiungi</button>
+                            </div>
                         </form>
                     </div>
                 </div>
@@ -113,13 +113,22 @@
                 <div class="panel">
                     <p class="panel-heading">Admin</p>
                     <div class="panel-block">
-                        <p>Al monetno ci sono <b>2</b> admin.</p>
+                        <p>Al momento ci sono <b>2</b> admin.</p>
                     </div>
                 </div>
             </div>
         </div>
         <h3 class="title is-5">Frequenze</h3>
         <div class="container">
+            <article id="completato3" class="message is-success" style="display: none;">
+                <div class="message-header">
+                  <p>Compleatato</p>
+                  <button class="delete" aria-label="delete"></button>
+                </div>
+                <div class="message-body">
+                    Hai eliminato con <strong>successo</strong> la riga!
+                </div>
+            </article>
             <div class="columns">
                 <div class="column">
                     <table id="table" class="table sortable is-striped is-bordered is-fullwidth">
@@ -154,6 +163,26 @@
             return !~text.indexOf(val);
         }).hide();
     });
+    function DeleteButton(element){
+
+    var value = element.getAttribute('value');
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', '/api/delete/frequency?frequencyNumber='+value);
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState !== 4) return;
+        if (xhr.status === 200) {
+            document.getElementById("completato3").style.display = "inline";
+            element.parentNode.style.display = 'none';
+            setTimeout(() => { window.location.reload(false); }, 1000);
+        } else {
+            alert(xhr.responseText)
+        }
+    }
+
+    // start request
+    xhr.send();
+
+    }
 </script>
 
 {% endblock %}

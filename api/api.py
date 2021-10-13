@@ -94,6 +94,50 @@ def do_payments():
     
     return '{["status"]="KO"}'
 
+@api.route('/new/frequency', methods=['GET','POST'])
+def new_frequency():
+    if request.method == 'POST':
+        frequencyNumber = request.form.get('frequencyNumber')
+        owner = request.form.get('owner')
+
+        if frequencyNumber != "" and owner != "" and int(frequencyNumber) > 0:
+            try:
+                db = Database()
+                db_session = db.session
+                db_session.add(db.frequency(id=frequencyNumber,owner=owner, reallocable=0, occuped=1))
+                db_session.commit()
+                db_session.close()
+                return redirect(url_for('dashboard.index'))
+            except Exception as e:
+                print(e)
+                return '{["status"]="KO"}'
+
+        
+        return redirect(url_for('dashboard.index'))
+    return redirect(url_for('dashboard.index'))
+
+@api.route('/delete/frequency', methods=['GET','POST'])
+def delete_frequency():
+    if request.method == 'GET':
+        frequencyNumber = request.args.get('frequencyNumber')
+
+        if frequencyNumber and int(frequencyNumber) > 0:
+            try:
+                db = Database()
+                db_session = db.session
+                data = db_session.query(db.frequency).filter(db.frequency.id == frequencyNumber).one()
+                db_session.delete(data)
+                db_session.commit()
+                db_session.close()
+                return redirect(url_for('dashboard.index'))
+            except Exception as e:
+                print(e)
+                return '{["status"]="KO"}'
+
+        
+        return redirect(url_for('dashboard.index'))
+    return redirect(url_for('dashboard.index'))
+
 @api.route('/version/lua')
 def version_lua():
 
