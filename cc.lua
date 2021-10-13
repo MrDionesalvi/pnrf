@@ -91,17 +91,17 @@ function make_payment(player, amount)
     titolo("PNFR HUB | Pagamento")
     colore(colors.black)
     term.setCursorPos(1,2)
-    print("Inserisce le credenziali nPay\n per comprare la tua frequenza")
-
-    term.setCursorPos(1,4)
-    term.write("Nome utente:")
-    term.setCursorPos(1,5)
-    term.write("Nome utente:")
-
-    term.setCursorPos(1,4)
-    username = read("")
+    print("Inserisce le credenziali nPay\nper comprare la tua frequenza")
 
     term.setCursorPos(1,5)
+    term.write("Nome utente:")
+    term.setCursorPos(1,6)
+    term.write("Password:")
+
+    term.setCursorPos(14,5)
+    username = read()
+
+    term.setCursorPos(11,6)
     password = read("*")
 
     a = http.get("https://pnrf.rgbcraft.com/api/do/payments?player="..player.."&username="..username.."&password="..password.."&amount="..amount)

@@ -61,7 +61,7 @@ def check_newfrequency():
         strings = "{[\"status\"]=\"OK\",[\"frequency\"]=\""+str(totalFrequency)+"\",[\"price\"]=\""+str(price)+"\"}" 
         return strings
 
-    return '{["status"]="OK"}'
+    return '{["status"]="KO"}'
 
 
 @api.route('/do/payments')
@@ -91,6 +91,8 @@ def do_payments():
                 
         except (requests.exceptions.ConnectionError, requests.exceptions.ReadTimeout):
             return '{["status"]="KO", ["detail"]="Server offline"}'
+    
+    return '{["status"]="KO"}'
 
 @api.route('/version/lua')
 def version_lua():
