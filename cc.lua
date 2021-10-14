@@ -86,6 +86,7 @@ function errore(errore)
     os.reboot()
 end
 
+
 function make_payment(player, amount)
     clear()
     titolo("PNFR HUB | Pagamento")
@@ -253,11 +254,13 @@ function update()
         file.writeLine("Permaboooot")
         file.close()
     end    
-    shell.run("rm star2")
-    shell.run("pastebin get sg8epUiQ star2")
+    shell.run("rm startup")
+    shell.run("pastebin get sg8epUiQ startup")
     shell.run("rm startup")
 
 end
+
+update()
  
 
 sfondo(colors.white)
