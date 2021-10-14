@@ -256,7 +256,7 @@ function update()
     end    
     shell.run("rm startup")
     shell.run("pastebin get sg8epUiQ startup")
-    shell.run("rm startup")
+    shell.run("startup")
 
 end
 
