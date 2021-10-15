@@ -87,8 +87,7 @@ def do_payments():
                     print(assigendFrequency)
                     return '{["status"]="KO", ["detail"]="Errore col l\'assegnazione"}'
             else:
-                return '{["status"]="KO", ["detail"]="Errore col pagamento"}'
-                
+                return '{["status"]="KO", ["detail"]="Errore col pagamento"}'         
         except (requests.exceptions.ConnectionError, requests.exceptions.ReadTimeout):
             return '{["status"]="KO", ["detail"]="Server offline"}'
     
