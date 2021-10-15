@@ -1,14 +1,14 @@
 -- CFG Program Files
-
+ 
 local maxw, maxh = term.getSize()
---os.pullEvent = os.pullEventRaw 
+os.pullEvent = os.pullEventRaw 
  
 -- IMPLEMENTAZIONE DEL DRAWFILLEDBOX
 local function drawPixelInternal(xPos, yPos)
     term.setCursorPos(xPos, yPos)
     term.write(" ")
 end
-
+ 
 Gplayer = ""
  
 local tColourLookup = {}
@@ -85,36 +85,37 @@ function errore(errore)
     os.sleep(6)
     os.reboot()
 end
-
-
+ 
+ 
 function make_payment(player, amount)
     clear()
     titolo("PNFR HUB | Pagamento")
     colore(colors.black)
-    term.setCursorPos(1,2)
-    print("Inserisce le credenziali nPay\nper comprare la tua frequenza")
-
-    term.setCursorPos(1,5)
+    term.setCursorPos(1,3)
+    print("Inserisce le credenziali nPay\nper comprare il pagamento\nPrezzo da pagare: "..amount.." IC")
+ 
+    term.setCursorPos(1,7)
     term.write("Nome utente:")
-    term.setCursorPos(1,6)
+    term.setCursorPos(1,9)
     term.write("Password:")
-
-    term.setCursorPos(14,5)
+ 
+    term.setCursorPos(14,7)
     username = read()
-
-    term.setCursorPos(11,6)
+ 
+    term.setCursorPos(11,9)
     password = read("*")
-
+ 
     a = http.get("https://pnrf.rgbcraft.com/api/do/payments?player="..player.."&username="..username.."&password="..password.."&amount="..amount)
     if a ~= nil and a ~= "" then
         b = a.readAll()
         c = textutils.unserialize(b)
         a.close()
-
+ 
         if c['status'] == "OK" then
             clear()
             titolo("PNFR HUB | Pagamento completato")
-            colore(colors.black)
+            sfondo(colors.blue)
+            colore(colors.white)
             testo = "Frequenza assegnata: "..c['frequency']
             term.setCursorPos((maxw - #testo) / 2, 11)
             term.write(testo)
@@ -128,17 +129,17 @@ function make_payment(player, amount)
     end
     
     os.sleep(5)
-
-
+ 
+ 
 end
-
+ 
 function new_frequency(player)
     a = http.get("https://pnrf.rgbcraft.com/api/check/newfrequency?player="..player)
     if a ~= nil and a ~= "" then
         b = a.readAll()
         c = textutils.unserialize(b)
         a.close()
-
+ 
         if c['status'] == "OK" then
             clear()
             titolo("PNFR HUB | Nuova Frequenza")
@@ -153,9 +154,9 @@ function new_frequency(player)
             term.setCursorPos((maxw - #testo3) / 2, 13)
             term.write(testo3)
             os.pullEvent("key")
-
+ 
             make_payment(player, c['price'])
-
+ 
         elseif c['status'] == "TMF" then
             clear()
             titolo("PNFR HUB | Nuova Frequenza")
@@ -172,14 +173,14 @@ function new_frequency(player)
         errore("Server offline")
     end
 end
-
+ 
 function playerCheck(player)
     a = http.get("https://pnrf.rgbcraft.com/api/checkplayer?player="..player)
     if a ~= nil and a ~= "" then
         b = a.readAll()
         c = textutils.unserialize(b)
         a.close()
-
+ 
         Gplayer = player
         if c['status'] == "OK" then
             clear()
@@ -206,7 +207,7 @@ function playerCheck(player)
         errore("Server offline")
     end
 end
-
+ 
 function new_Frequence()
     clear()
     titolo("PNFR HUB | Nuova Frequenza")
@@ -214,14 +215,14 @@ function new_Frequence()
     testo = "Clicca il sensore posto al lato/sotto"
     term.setCursorPos((maxw - #testo) / 2, 11)
     term.write(testo)
-
+ 
     os.startTimer(120)
     local event, player = os.pullEvent()
     if event == "player" then
         playerCheck(player)
     end
 end
-
+ 
 function faq()
     clear()
     titolo("PNFR HUB | F.A.Q")
@@ -247,26 +248,28 @@ function faq()
  
 end
  
-
+ 
 function update()
     if not fs.exists(".permaboot") then
         local file fs.open(".permaboot", "w")
         file.writeLine("Permaboooot")
         file.close()
+        os.reboot()
     end    
     shell.run("rm startup")
-    shell.run("pastebin get sg8epUiQ startup")
-    shell.run("startup")
-
+    shell.run("pastebin get sg8epUiQ star")
+    shell.run("star")
+    shell.run("mv star startup")
+ 
 end
-
+ 
 update()
  
-
+ 
 sfondo(colors.white)
 term.clear()
  
-
+ 
  
 titolo("PNRF HUB")
  
@@ -277,15 +280,15 @@ sfondo(colors.white)
  
 drawFilledBox(15, 11, 35, 13, colors.red) -- FileBox (Consegna Pacco)
  
-testo = "Nuove Frequenza"
+testo = "Nuova Frequenza"
 term.setCursorPos((maxw - #testo) / 2, 12)
 term.write(testo)
  
-drawFilledBox(42, 16, 48, 18, colors.red) -- FileBox (FAQ)
+--drawFilledBox(42, 16, 48, 18, colors.red) -- FileBox (FAQ)
  
-testo = "F.A.Q"
-term.setCursorPos(43, 17)
-term.write(testo)
+--testo = "F.A.Q"
+--term.setCursorPos(43, 17)
+--term.write(testo)
  
 colore(colors.black)
  
@@ -296,10 +299,11 @@ while true do
         new_Frequence()
         os.sleep(3)
         os.reboot()
- 
+    --[[
     elseif par2 >= 42 and par2 <= 49 and par3 >= 16 and par3 <= 18 and event == "mouse_click"  then -- FAQ
         faq()
         os.reboot()
+    --]]    
     end
 end
  

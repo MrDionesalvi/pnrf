@@ -11,7 +11,7 @@ api = Blueprint('api', __name__)
 
 
 priceFrequency = {
-    1: 0,
+    1: 1,
     2: 10,
     3: 100,
     4: 1000,
