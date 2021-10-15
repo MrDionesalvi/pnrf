@@ -1,6 +1,8 @@
 -- CFG Program Files
  
 local maxw, maxh = term.getSize()
+local printer = peripheral.wrap("left")
+
 os.pullEvent = os.pullEventRaw 
  
 -- IMPLEMENTAZIONE DEL DRAWFILLEDBOX
@@ -85,7 +87,34 @@ function errore(errore)
     os.sleep(6)
     os.reboot()
 end
- 
+
+function printer(message)
+
+    if printer.getPaperLevel() == 0 then -- If there is no paper in the printer
+      errore("La carta nella stampante è finita!")
+    end
+    
+    if printer.getInkLevel() == 0 then -- If there is no ink in the printer
+      error("L'inchiostro nella stampante è finita!")
+    end
+    
+    -- There is paper and ink in the printer, we can now print a page
+    
+    if printer.newPage() then
+      printer.write("Frequenza:")
+      
+      printer.setCursorPos(1, 3)
+      printer.write("* "..message)
+      
+      printer.setCursorPos(1, 4)
+      printer.write("* Per maggiore info contatatta lego11")
+      
+      printer.setPageTitle("PNRF - Ricevuta")
+      printer.endPage()
+    else
+      errore("Stampante inceppata!")
+    end 
+end
  
 function make_payment(player, amount)
     clear()
@@ -114,11 +143,14 @@ function make_payment(player, amount)
         if c['status'] == "OK" then
             clear()
             titolo("PNFR HUB | Pagamento completato")
-            sfondo(colors.blue)
-            colore(colors.white)
+            sfondo(colors.white)
+            colore(colors.black)
             testo = "Frequenza assegnata: "..c['frequency']
             term.setCursorPos((maxw - #testo) / 2, 11)
             term.write(testo)
+            print("\n   Stiamo stampando la ricevuta..")
+            os.sleep(1)
+            printer(c['frequency'])
             os.sleep(8)
             os.reboot()
         else
