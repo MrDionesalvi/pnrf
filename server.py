@@ -51,7 +51,7 @@ def page_not_found(e):
 
 def start_site():
     try:
-        app.debug = True
+        app.debug = False
         app.run(host='0.0.0.0', port=53056, threaded=True)
     except Exception as e:
         print(e)
