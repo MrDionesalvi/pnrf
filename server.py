@@ -7,13 +7,15 @@ from api.api import api
 from auth.auth import auth
 from dashboard.dashboard import dashboard
 import time
+import logging
 
 
 
 app = Flask(__name__, template_folder='views', static_folder='assets', static_url_path='/assets')
 app.secret_key = 'E6pdioneCazzBigEnorm121S9FKWgPGiGN6jx6s8yk2X3TT'
 cache = Cache(app,config={'CACHE_TYPE': 'simple'})
-
+log = logging.getLogger('werkzeug')
+log.setLevel(logging.ERROR)
 
 app.register_blueprint(api, url_prefix='/api')
 app.register_blueprint(auth)
