@@ -17,13 +17,16 @@ def index():
         "frequencyAviable": 999-int(len(b))
     }
     for c in b:
-            table += f"""
+        table += f"""
                 <tr>
                     <td class="id">{c['id']}</td>
                     <td class="owner">{c['owner']}</td>
-                    <td class="reallocable">{"Sì" if c['reallocable'] == 1 else "No"}</td>
-                    <td class="occuped">{"Sì" if c['occuped'] else "No"}</td>
-                    <td class="remove"><button value="{c['id']}" class="remove-item-btn" onclick="DeleteButton(this)">Elimina</button></td>
+                    <td class="reallocable">{"Sì" if int(c['reallocable']) == 1 else "No"}</td>
+                    <td class="occuped">{"Sì" if int(c['occuped']) == 1 else "No"}</td>
+                    <td class="butons">
+                        <button value="{c['id']}" class="remove-item-btn button is-danger is-small" onclick="DeleteButton(this)">Elimina</button>
+                        <button value="{c['id']}" class="change-item-btn button is-warning is-small" onclick="ChangeButton(this)">Ri-Alloca</button>
+                    </td>
                 </tr>
         """
 

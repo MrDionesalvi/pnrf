@@ -85,7 +85,7 @@ def do_payments():
                     return "{[\"status\"]=\"OK\",[\"frequency\"]=\""+str(assigendFrequency)+"\"}" 
                 else:
                     print(assigendFrequency)
-                    return '{["status"]="KO", ["detail"]="Errore col l\'assegnazione"}'
+                    return '{["status"]="KO", ["detail"]="Errore con l\'assegnazione"}'
             else:
                 return '{["status"]="KO", ["detail"]="Errore col pagamento"}'         
         except (requests.exceptions.ConnectionError, requests.exceptions.ReadTimeout):
@@ -134,6 +134,31 @@ def delete_frequency():
                 db_session = db.session
                 data = db_session.query(db.frequency).filter(db.frequency.id == frequencyNumber).one()
                 db_session.delete(data)
+                db_session.commit()
+                db_session.close()
+                return redirect(url_for('dashboard.index'))
+            except Exception as e:
+                print(e)
+                return '{["status"]="KO"}'
+
+        
+        return redirect(url_for('dashboard.index'))
+    return redirect(url_for('dashboard.index'))
+
+@api.route('/changeAllocable', methods=['GET', 'POST'])
+def changeAllocable():
+    if request.method == 'GET':
+        frequencyNumber = request.args.get('frequencyNumber')
+
+        if frequencyNumber and int(frequencyNumber) > 0:
+            try:
+                db = Database()
+                db_session = db.session
+                data = db_session.query(db.frequency).filter(db.frequency.id == frequencyNumber).one()
+                if str(data.reallocable) == "0":
+                    data.reallocable = 1
+                else:
+                    data.reallocable = 0
                 db_session.commit()
                 db_session.close()
                 return redirect(url_for('dashboard.index'))

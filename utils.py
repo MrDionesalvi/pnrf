@@ -101,23 +101,58 @@ def assign_LastFrequencyNumber(username):
     """
     Assegna l'ultima frequenza
     """
+    print("called")
+    print(username)
+    def find_missing(lst):
+        return [x for x in range(lst[0], lst[-1]+1) if x not in lst]
+
+    frequencys = []
+
+    if frequencys[-1] == 1999:
+        # TODO: Impletare che controlla le riallocabili!!!
+        return False
+
     db = Database()
     db_session = db.session
 
     allFrequency = get_allFrequency()
-
     allFrequencyLoaded = json.loads(allFrequency)
 
-    lastFrequency = allFrequencyLoaded[-1]
+    for a in allFrequencyLoaded:
+        frequencys.append(a['id'])
 
-    lastFrequencyNumber = (int(lastFrequency['id'])+1)
+    FrequencyMissing = find_missing(frequencys)
+    frequencys.sort()
 
-    try:
-        db_session.add(db.frequency(id=lastFrequencyNumber,owner=username, reallocable=0, occuped=1))
-        db_session.commit()
-        db_session.close()
+    if FrequencyMissing:
+        lastFrequencyNumber = FrequencyMissing[0]
+        print("slot 1")
+        try:
+            db_session.add(db.frequency(id=lastFrequencyNumber,owner=username, reallocable=0, occuped=1))
+            db_session.commit()
+            db_session.close()
+            print(lastFrequencyNumber)
+            return lastFrequencyNumber
+        except Exception as e:
+            print(e)
+            return False
+    else:
+        print("slot 2")
+        lastFrequency = frequencys[-1]
 
-        return lastFrequencyNumber
-    except Exception as e:
-        print(e)
-        return False
+        lastFrequencyNumber = lastFrequency+1
+
+        print(lastFrequencyNumber)
+
+        try:
+            db_session.add(db.frequency(id=lastFrequencyNumber,owner=username, reallocable=0, occuped=1))
+            db_session.commit()
+            db_session.close()
+
+            return lastFrequencyNumber
+        except Exception as e:
+            print(e)
+            return False
+
+
+

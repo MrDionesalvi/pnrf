@@ -5,6 +5,7 @@
 {% block header %}
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
 
+
 {% endblock %}
 
 {% block content %}
@@ -90,7 +91,7 @@
                                     <input type="number" name="frequencyNumber" id="frequencyNumber" class="input">
                                 </div>
                             </div>
-                            <div class="field">
+                            <div class="field" required>
                                 <label for="" class="label">Proprietario:</label>
                                 <div class="control">
                                     <input type="text" name="owner" id="owner" class="input">
@@ -120,7 +121,7 @@
         </div>
         <h3 class="title is-5">Frequenze</h3>
         <div class="container">
-            <article id="completato3" class="message is-success" style="display: none;">
+            <article id="completato3" class="message is-success follow-scroll" style="display: none">
                 <div class="message-header">
                   <p>Compleatato</p>
                   <button class="delete" aria-label="delete"></button>
@@ -129,13 +130,22 @@
                     Hai eliminato con <strong>successo</strong> la riga!
                 </div>
             </article>
+            <article id="completato4" class="message is-success follow-scroll" style="display: none">
+                <div class="message-header">
+                  <p>Compleatato</p>
+                  <button class="delete" aria-label="delete"></button>
+                </div>
+                <div class="message-body">
+                    Hai ri-allocato con <strong>successo</strong> la riga!
+                </div>
+            </article>
             <div class="columns">
                 <div class="column">
                     <table id="table" class="table sortable is-striped is-bordered is-fullwidth">
                         <thead>
                             <tr>
-                                <th class="sort" data-sort="id">id</th>
-                                <th class="sort" data-sort="owner">Proprietario</th>
+                                <th class="sort" data-sort="id" onclick="sortTable(0)">ID</th>
+                                <th class="sort" data-sort="owner" onclick="sortTable(1)">Proprietario</th>
                                 <th class="sort" data-sort="reallocable">Ri-Allocabile</th>
                                 <th class="sort" data-sort="occuped">Occupata</th>
                                 <th colspan="2">
@@ -172,7 +182,7 @@
         if (xhr.readyState !== 4) return;
         if (xhr.status === 200) {
             document.getElementById("completato3").style.display = "inline";
-            element.parentNode.style.display = 'none';
+            element.parentNode.parentNode.style.display = 'none';
             setTimeout(() => { window.location.reload(false); }, 1000);
         } else {
             alert(xhr.responseText)
@@ -182,6 +192,81 @@
     // start request
     xhr.send();
 
+    }
+    function ChangeButton(element){
+
+    var value = element.getAttribute('value');
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', '/api/changeAllocable?frequencyNumber='+value);
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState !== 4) return;
+        if (xhr.status === 200) {
+            document.getElementById("completato4").style.display = "inline";
+            element.parentNode.parentNode.style.display = 'none';
+            setTimeout(() => { window.location.reload(false); }, 1000);
+        } else {
+            alert(xhr.responseText)
+        }
+    }
+
+    // start request
+    xhr.send();
+
+    }
+
+    function sortTable(n) {
+    var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+    table = document.getElementById("table");
+    switching = true;
+    //Set the sorting direction to ascending:
+    dir = "asc"; 
+    /*Make a loop that will continue until
+    no switching has been done:*/
+    while (switching) {
+        //start by saying: no switching is done:
+        switching = false;
+        rows = table.rows;
+        /*Loop through all table rows (except the
+        first, which contains table headers):*/
+        for (i = 1; i < (rows.length - 1); i++) {
+        //start by saying there should be no switching:
+        shouldSwitch = false;
+        /*Get the two elements you want to compare,
+        one from current row and one from the next:*/
+        x = rows[i].getElementsByTagName("TD")[n];
+        y = rows[i + 1].getElementsByTagName("TD")[n];
+        /*check if the two rows should switch place,
+        based on the direction, asc or desc:*/
+        if (dir == "asc") {
+            if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+            //if so, mark as a switch and break the loop:
+            shouldSwitch= true;
+            break;
+            }
+        } else if (dir == "desc") {
+            if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+            //if so, mark as a switch and break the loop:
+            shouldSwitch = true;
+            break;
+            }
+        }
+        }
+        if (shouldSwitch) {
+        /*If a switch has been marked, make the switch
+        and mark that a switch has been done:*/
+        rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+        switching = true;
+        //Each time a switch is done, increase this count by 1:
+        switchcount ++;      
+        } else {
+        /*If no switching has been done AND the direction is "asc",
+        set the direction to "desc" and run the while loop again.*/
+        if (switchcount == 0 && dir == "asc") {
+            dir = "desc";
+            switching = true;
+        }
+        }
+    }
     }
 </script>
 
