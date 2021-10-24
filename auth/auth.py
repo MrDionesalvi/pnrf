@@ -34,7 +34,6 @@ def login():
             if response['status'] != 403:
                 if username.lower() == "lego11" or username.lower() == "mrdionesalvi":
                     session['username'] = username
-                    session['password'] = password
                     session['logged'] = True
                     return redirect(url_for('dashboard.index'))
                 else:
