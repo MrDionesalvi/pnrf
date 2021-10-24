@@ -107,9 +107,11 @@ def assign_LastFrequencyNumber(username):
 
         frequencys = []
 
+        """
         if frequencys[-1] == 1999:
             # TODO: Impletare che controlla le riallocabili!!!
             return False
+        """
 
         db = Database()
         db_session = db.session
