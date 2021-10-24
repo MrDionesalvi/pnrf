@@ -2,6 +2,7 @@ from flask import *
 from datetime import timedelta
 from utils import *
 from flask_caching import Cache
+from dotenv import dotenv_values
 
 from api.api import api
 from auth.auth import auth
@@ -10,9 +11,10 @@ import time
 import logging
 
 
+config = dotenv_values(".env")
 
 app = Flask(__name__, template_folder='views', static_folder='assets', static_url_path='/assets')
-app.secret_key = 'E6pdioneCazzBigEnorm121S9FKWgPGiGN6jx6s8yk2X3TT'
+app.secret_key = config['secret_key']
 cache = Cache(app,config={'CACHE_TYPE': 'simple'})
 log = logging.getLogger('werkzeug')
 log.setLevel(logging.ERROR)

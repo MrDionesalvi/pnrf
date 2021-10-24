@@ -98,20 +98,28 @@ def new_frequency():
     if request.method == 'POST':
         frequencyNumber = request.form.get('frequencyNumber')
         owner = request.form.get('owner')
-
-        if frequencyNumber != "" and owner != "" and int(frequencyNumber) > 0:
-            try:
-                db = Database()
-                db_session = db.session
-                db_session.add(db.frequency(id=frequencyNumber,owner=owner, reallocable=0, occuped=1))
-                db_session.commit()
-                db_session.close()
-                return redirect(url_for('dashboard.index'))
-            except Exception as e:
-                print(e)
-                return '{["status"]="KO"}'
-
-        
+        try:
+            if owner != "":
+                if frequencyNumber == "":
+                    assigendFrequency = assign_LastFrequencyNumber(owner)
+                    if assigendFrequency:
+                        return redirect(url_for('dashboard.index'))
+                    else:
+                        return redirect(url_for('dashboard.index'))           
+                elif frequencyNumber != "" and int(frequencyNumber) > 0:
+                    try:
+                        db = Database()
+                        db_session = db.session
+                        db_session.add(db.frequency(id=frequencyNumber,owner=owner, reallocable=0, occuped=1))
+                        db_session.commit()
+                        db_session.close()
+                        return redirect(url_for('dashboard.index'))
+                    except Exception as e:
+                        print(e)
+                        return '{["status"]="KO"}' 
+        except:
+            print('{["status"]="KO"}')
+            return redirect(url_for('dashboard.index'))       
         return redirect(url_for('dashboard.index'))
     return redirect(url_for('dashboard.index'))
 

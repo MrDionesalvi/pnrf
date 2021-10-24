@@ -1,7 +1,7 @@
 -- CFG Program Files
  
 local maxw, maxh = term.getSize()
-local printer = peripheral.wrap("left")
+local printer = peripheral.wrap("back")
 
 os.pullEvent = os.pullEventRaw 
  
@@ -88,7 +88,7 @@ function errore(errore)
     os.reboot()
 end
 
-function printer(message)
+function print_Page(message)
 
     if printer.getPaperLevel() == 0 then -- If there is no paper in the printer
       errore("La carta nella stampante è finita!")
@@ -101,14 +101,15 @@ function printer(message)
     -- There is paper and ink in the printer, we can now print a page
     
     if printer.newPage() then
-      printer.write("Frequenza:")
+      printer.write("Ricevuta PNRF")
       
       printer.setCursorPos(1, 3)
-      printer.write("* "..message)
+      printer.write("* Frequenza: "..message)
+
       
-      printer.setCursorPos(1, 4)
-      printer.write("* Per maggiore info contatatta lego11")
-      
+      printer.setCursorPos(1, 8)
+      printer.write("Grazie per usare PNRF")
+
       printer.setPageTitle("PNRF - Ricevuta")
       printer.endPage()
     else
@@ -148,16 +149,16 @@ function make_payment(player, amount)
             testo = "Frequenza assegnata: "..c['frequency']
             term.setCursorPos((maxw - #testo) / 2, 11)
             term.write(testo)
-            print("\n   Stiamo stampando la ricevuta..")
+            print("\n         Stiamo stampando la ricevuta..")
             os.sleep(1)
-            printer(c['frequency'])
+            print_Page(c['frequency'])
             os.sleep(8)
             os.reboot()
         else
             errore(c['detail'])
         end
     else
-        errore("Server offline")
+        errore("Server non raggiungibile")
     end
     
     os.sleep(5)
@@ -202,7 +203,7 @@ function new_frequency(player)
             os.reboot()
         end
     else
-        errore("Server offline")
+        errore("Server non raggiungibile")
     end
 end
  
@@ -236,7 +237,7 @@ function playerCheck(player)
             os.reboot()
         end
     else
-        errore("Server offline")
+        errore("Server non raggiungibile")
     end
 end
  
