@@ -103,15 +103,9 @@ def assign_LastFrequencyNumber(username):
     """
     try:
         def find_missing(lst):
-            return [x for x in range(lst[0], lst[-1]+1) if x not in lst]
+            return [x for x in range(1000, lst[-1]+1) if x not in lst]
 
         frequencys = []
-
-        """
-        if frequencys[-1] == 1999:
-            # TODO: Impletare che controlla le riallocabili!!!
-            return False
-        """
 
         db = Database()
         db_session = db.session
@@ -125,26 +119,25 @@ def assign_LastFrequencyNumber(username):
         FrequencyMissing = find_missing(frequencys)
         frequencys.sort()
 
+        if frequencys[-1] == 1999:
+            # TODO: Impletare che controlla le riallocabili!!!
+            return False
+
+
         if FrequencyMissing:
             lastFrequencyNumber = FrequencyMissing[0]
-            print("slot 1")
             try:
                 db_session.add(db.frequency(id=lastFrequencyNumber,owner=username, reallocable=0, occuped=1))
                 db_session.commit()
                 db_session.close()
-                print(lastFrequencyNumber)
                 return lastFrequencyNumber
             except Exception as e:
                 print(e)
                 return False
         else:
-            print("slot 2")
             lastFrequency = frequencys[-1]
 
             lastFrequencyNumber = lastFrequency+1
-
-            print(lastFrequencyNumber)
-
             try:
                 db_session.add(db.frequency(id=lastFrequencyNumber,owner=username, reallocable=0, occuped=1))
                 db_session.commit()
