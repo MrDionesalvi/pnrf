@@ -101,58 +101,60 @@ def assign_LastFrequencyNumber(username):
     """
     Assegna l'ultima frequenza
     """
-    print("called")
-    print(username)
-    def find_missing(lst):
-        return [x for x in range(lst[0], lst[-1]+1) if x not in lst]
+    try:
+        def find_missing(lst):
+            return [x for x in range(lst[0], lst[-1]+1) if x not in lst]
 
-    frequencys = []
+        frequencys = []
 
-    if frequencys[-1] == 1999:
-        # TODO: Impletare che controlla le riallocabili!!!
-        return False
+        if frequencys[-1] == 1999:
+            # TODO: Impletare che controlla le riallocabili!!!
+            return False
 
-    db = Database()
-    db_session = db.session
+        db = Database()
+        db_session = db.session
 
-    allFrequency = get_allFrequency()
-    allFrequencyLoaded = json.loads(allFrequency)
+        allFrequency = get_allFrequency()
+        allFrequencyLoaded = json.loads(allFrequency)
 
-    for a in allFrequencyLoaded:
-        frequencys.append(a['id'])
+        for a in allFrequencyLoaded:
+            frequencys.append(a['id'])
 
-    FrequencyMissing = find_missing(frequencys)
-    frequencys.sort()
+        FrequencyMissing = find_missing(frequencys)
+        frequencys.sort()
 
-    if FrequencyMissing:
-        lastFrequencyNumber = FrequencyMissing[0]
-        print("slot 1")
-        try:
-            db_session.add(db.frequency(id=lastFrequencyNumber,owner=username, reallocable=0, occuped=1))
-            db_session.commit()
-            db_session.close()
+        if FrequencyMissing:
+            lastFrequencyNumber = FrequencyMissing[0]
+            print("slot 1")
+            try:
+                db_session.add(db.frequency(id=lastFrequencyNumber,owner=username, reallocable=0, occuped=1))
+                db_session.commit()
+                db_session.close()
+                print(lastFrequencyNumber)
+                return lastFrequencyNumber
+            except Exception as e:
+                print(e)
+                return False
+        else:
+            print("slot 2")
+            lastFrequency = frequencys[-1]
+
+            lastFrequencyNumber = lastFrequency+1
+
             print(lastFrequencyNumber)
-            return lastFrequencyNumber
-        except Exception as e:
-            print(e)
-            return False
-    else:
-        print("slot 2")
-        lastFrequency = frequencys[-1]
 
-        lastFrequencyNumber = lastFrequency+1
+            try:
+                db_session.add(db.frequency(id=lastFrequencyNumber,owner=username, reallocable=0, occuped=1))
+                db_session.commit()
+                db_session.close()
 
-        print(lastFrequencyNumber)
-
-        try:
-            db_session.add(db.frequency(id=lastFrequencyNumber,owner=username, reallocable=0, occuped=1))
-            db_session.commit()
-            db_session.close()
-
-            return lastFrequencyNumber
-        except Exception as e:
-            print(e)
-            return False
+                return lastFrequencyNumber
+            except Exception as e:
+                print(e)
+                return False
+    except Exception as e:
+        print(e)
+        return False
 
 
 
