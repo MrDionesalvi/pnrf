@@ -1,28 +1,19 @@
-{% extends 'templates/base.html' %}
-
-{% block title %}Login{% endblock %}
-
-{% block header %}
-<link rel="stylesheet" href="{{ url_for('static', filename='css/bulma-tooltip.min.css') }}">
-{% endblock %}
-
-{% block content %}
+{% extends 'templates/base.html' %} {% block title %}Login{% endblock %} {% block header %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/bulma-tooltip.min.css') }}"> {% endblock %} {% block content %}
 <div class="hero-body">
     <div class="container">
         <div class="columns is-centered">
             <div class="column is-5 is-narrow">
                 <div class="box">
                     <h1 class="title is-3 has-text-dark has-text-centered">Accedi</h1>
-                    <p class="has-text-centered">Utilizza il tuo account NebraskaPay&nbsp;
-                        <span data-tooltip="Se non possiedi un account nPay,&#10;puoi crearne uno ad un qualsiasi terminale&#10;che trovi per le banche del server." class="has-tooltip-right has-tooltip-arrow has-tooltip-multiline">
+                    <p class="has-text-centered"><b>SOLO per amministratori!</b><br /> Registra la tua frequenza ingame al Palazzo del Governo.&nbsp;
+                        <span data-tooltip="&#10;che trovi per le banche del server." class="has-tooltip-right has-tooltip-arrow has-tooltip-multiline">
                             <i class="icon far fa-question-circle"></i>
                         </span>
                     </p>
-                    <hr>
-                    {% if message %}
+                    <hr> {% if message %}
                     <div class="notification is-danger">
-                        <button class="delete"></button>
-                        {{ message }}
+                        <button class="delete"></button> {{ message }}
                     </div>
                     {% endif %}
                     <form action="" method="POST">
@@ -32,12 +23,10 @@
                                 <input class="input {% if 'username' in invalid_inputs %}is-danger{% endif %}" type="text" placeholder="Il tuo username di nPay" value="{{ username_value }}" name="username" id="username">
                                 <span class="icon is-small is-left">
                                     <i class="fas fa-user"></i>
-                                </span>
-                                {% if 'username' in invalid_inputs %}
+                                </span> {% if 'username' in invalid_inputs %}
                                 <span class="icon is-small is-right">
                                     <i class="fas fa-exclamation-triangle"></i>
-                                </span>
-                                {% endif %}
+                                </span> {% endif %}
                             </div>
                             {% if 'username' in invalid_inputs %}
                             <p class="help is-danger">{{ invalid_inputs['username'] }}</p>
@@ -49,12 +38,10 @@
                                 <input class="input {% if 'password' in invalid_inputs %}is-danger{% endif %}" type="password" placeholder="La tua password di nPay" value="{{ password_value }}" name="password" id="password">
                                 <span class="icon is-small is-left">
                                     <i class="fas fa-lock"></i>
-                                </span>
-                                {% if 'password' in invalid_inputs %}
+                                </span> {% if 'password' in invalid_inputs %}
                                 <span class="icon is-small is-right">
                                     <i class="fas fa-exclamation-triangle"></i>
-                                </span>
-                                {% endif %}
+                                </span> {% endif %}
                             </div>
                             {% if 'password' in invalid_inputs %}
                             <p class="help is-danger">{{ invalid_inputs['password'] }}</p>
