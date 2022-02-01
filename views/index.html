@@ -1,53 +1,49 @@
-{% extends 'templates/base.html' %}
+{% extends 'templates/base.html' %} {% block title_after %} - Home Page{% endblock %} {% block header %}
 
-{% block title_after %} - Home Page{% endblock %}
-
-{% block header %}
 <head>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
     <style>
         html {
             scroll-behavior: smooth;
         }
-        body{
-            font-family: 'Nunito Sans', sans-serif, 'Segoe UI','Fira Sans','Droid Sans', 'Helvetica Neue',Helvetica Arial,sans-serif;
+        
+        body {
+            font-family: 'Nunito Sans', sans-serif, 'Segoe UI', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', Helvetica Arial, sans-serif;
         }
+        
         .button:hover {
             text-shadow: 0px 0px 6px rgba(255, 255, 255, 1);
-            box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
-            -webkit-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
-            -moz-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
+            box-shadow: 0px 5px 40px -10px rgba(0, 0, 0, 0.57);
+            -webkit-box-shadow: 0px 5px 40px -10px rgba(0, 0, 0, 0.57);
+            -moz-box-shadow: 0px 5px 40px -10px rgba(0, 0, 0, 0.57);
             transition: all 0.4s ease 0s;
         }
-    
+        
         hr.rounded {
-            border-top: 2px solid  #c7b8ea;
+            border-top: 2px solid #c7b8ea;
             border-radius: 2px;
         }
-    
-        .button{
+        
+        .button {
             background-color: #c7b8ea;
         }
-    
-        #features{
+        
+        #features {
             background: linear-gradient(180deg, rgba(30, 45, 107, 0.521), rgba(100, 129, 244, 0.644), rgb(255 255 255) 100%);
             padding-top: 3rem;
             padding-bottom: 3rem;
         }
-    
-        .sectionf{
+        
+        .sectionf {
             padding-top: 1.5rem;
         }
-    
-        #footer{
+        
+        #footer {
             padding: 0.5rem;
         }
-    
     </style>
 </head>
-{% endblock %}
-
-{% block content %}
+{% endblock %} {% block content %}
 <div id="wrapper" class="has-text-centered-mobile">
     <!--Hero-->
     <section id="hero" class="hero is-medium">
@@ -57,7 +53,7 @@
                     <div class="column">
                         <h1 class="title">Benvenuto nel PNRF!</h1>
                         <p class="has-text-centered-mobile">
-                            Il piano Nazione per la Ripartizione delle Frequenza ti permette di ottenere delle frequenze seguendo lo stander vigente in materia
+                            Il piano Nazione per la Ripartizione delle Frequenza ti permette di ottenere delle frequenze per la Wireless Redstone.
 
                         </p>
                         <button id="learnbtn" type="button" class="button is-size-6 is-rounded " style="margin-top: 15px;">
@@ -65,7 +61,7 @@
                         </button>
                         <div class="is-divider" data-content="   "></div>
                     </div>
-                        
+
                     <div class="column">
                         <img src="{{url_for('static', filename = 'images/banner.png')}}" alt="banner">
                     </div>
@@ -113,10 +109,10 @@
         <div class="container">
             <div class="columns reverse-row-order">
                 <div class="column">
-                    <h1 class="title">Ottenere la frequenza</h1>
+                    <h1 class="title">A cosa serve?</h1>
                     <p class="has-text-black paragraph">
-                        Il Piano Nazionale per la Ripartizione delle Frequenze ti permette di ottenere i tuoi canali per utilizzare la Wireless Redstone garantendoti affidabilità e esenza da interferenze.
-                        Ottenere la frequenza è facilissimo, si impiegano meno di 2 minuti per richiederla. In men che non si dica sarà possibile utilizzare i propri trasmettitori in modo legale.
+                        Il Piano Nazionale per la Ripartizione delle Frequenze ti permette di ottenere i tuoi canali per utilizzare la Wireless Redstone garantendoti affidabilità e esenza da interferenze. Ottenere la frequenza è facilissimo, si impiegano meno di 2 minuti per
+                        richiederla. In men che non si dica sarà possibile utilizzare i propri trasmettitori in modo legale.
                     </p>
                 </div>
                 <div class="column">
@@ -134,9 +130,10 @@
                     <img src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fimage.flaticon.com%2Ficons%2Fpng%2F512%2F1163%2F1163519.png&f=1&nofb=1" style="width: 212px; height:212px">
                 </div>
                 <div class="column">
-                    <h1 class="title">Sicurezza</h1>
+                    <h1 class="title">Come ottengo la mia frequenza?</h1>
                     <p class="has-text-black paragraph">
-                        I tuoi dati vengono conservati nel database statale del Ministero delle Comunicazioni. La sicurezza è tutelata da crittografia con standard militari.
+                        Per ottenere la tua frequenza <b>recati all'Ufficio Radiofrequenze a New Radeon</b> (palazzo del Governo 🏳️‍🌈, Nebraska).<br /> Un computer ti guiderà durante la procedura per richiedere la tua frequenza. <b>Non serve registrarsi su questo sito</b>,
+                        avviene tutto all'interno del gioco.
                     </p>
                 </div>
             </div>
@@ -151,7 +148,8 @@
 <script type="text/javascript">
     $("button").click(function() {
         $('html,body').animate({
-            scrollTop: $(".sectionf").offset().top},
+                scrollTop: $(".sectionf").offset().top
+            },
             'slow');
     });
 </script>
